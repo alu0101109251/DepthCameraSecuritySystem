@@ -23,6 +23,7 @@ imutils = "==0.5.4"
 pyttsx3 = "==2.90"
 opencv-python = "==4.5.1.48"
 shapely = "*"
+opencv-contrib-python = "==4.5.1.48"
 
 [dev-packages]
 
