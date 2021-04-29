@@ -5,11 +5,6 @@ import imutils
 import numpy as np
 import pyrealsense2 as rs
 
-def is_outside_safezone(safezone, object):
-    outside = False
-
-    return outside
-
 # Constants
 AREA_THRESHOLD = 10000
 
@@ -76,16 +71,12 @@ try:
                 text = "Alarm"
 
         # draw the text and timestamp on the frame
-        cv2.putText(security_image, "Room Status: {}".format(text), (10, 20),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-        cv2.putText(security_image, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"),
-                    (10, security_image.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
+        cv2.putText(security_image, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
         # Show images
         cv2.imshow("Security Feed", security_image)
         cv2.imshow("First Frame", firstFrame)
         cv2.imshow("Gray", gray)
-        cv2.imshow("Frame Delta", frameDelta)
         cv2.imshow("Thresh", thresh)
 
         # Record if the user presses a key
