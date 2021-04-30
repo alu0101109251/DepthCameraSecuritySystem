@@ -2,28 +2,27 @@ import pyrealsense2 as rs
 import numpy as np
 import cv2
 
+# Safe Zone Coordinates
+(szx, szy, szw, szh) = (50, 50, 300, 300)
 
-# Configure depth and color streams
-pipeline = rs.pipeline()
+
+# Check is rectangle is out of safe zone
+def is_out_of_bounds(px, py, weight, height):
+    if px <= szx or py <= szy or (px + weight) >= (szx + szw) or (py + height) >= (szy + szh):
+        return True
+    return False
+
+
+# Intel RealSense Camera Pipeline Configuration
+pipeline = rs.pipeline(ctx=rs.context())
 config = rs.config()
 config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
 config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
-
-# Start streaming
 pipeline.start(config)
-frames = pipeline.wait_for_frames()
-firstFrame = np.asanyarray(frames.get_color_frame().get_data())
-
-if firstFrame is None:
-    pipeline.stop()
-    exit(1)
 
 # Tracker
 tracker = cv2.TrackerCSRT_create()
-bbox = cv2.selectROI("Frame", firstFrame, fromCenter=False)
-
-# Initialize tracker with first frame and bounding box
-ok = tracker.init(firstFrame, bbox)
+bbox = None
 
 try:
     while True:
@@ -40,31 +39,40 @@ try:
 
         # Defining safe zone and initial text
         text = "No Alarm"
-        roi = cv2.rectangle(colorFrame, (50, 50), (350, 350), (0, 0, 0), 2)
+        safeZone = cv2.rectangle(colorFrame, (szx, szy), (szx + szw, szy + szh), (0, 0, 255), 2, 1)
 
-        # Update tracker
-        ok, bbox = tracker.update(colorFrame)
+        if bbox is not None:
+            # Update tracker
+            success, bbox = tracker.update(colorFrame)
 
-        # Draw bounding box
-        if ok:
-            # Tracking success
-            p1 = (int(bbox[0]), int(bbox[1]))
-            p2 = (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3]))
-            cv2.rectangle(colorFrame, p1, p2, (255, 0, 0), 2, 1)
-            if p1[0] <= 50 or p1[1] <= 50 or p2[0] >= 350 or p2[1] >= 350:
-                text = "Alarm"
-        else:
-            # Tracking failure
-            cv2.putText(colorFrame, "Tracking failure detected", (100, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+            # Draw bounding box
+            if success:
+                # Tracking success
+                (x, y, w, h) = [int(p) for p in bbox]
+                cv2.rectangle(colorFrame, (x, y), (x + w, y + h), (0, 255, 0), 2, 1)
+
+                if is_out_of_bounds(x, y, w, h):
+                    text = "Alarm"
+            else:
+                # Tracking failure
+                cv2.putText(colorFrame, "Tracking failure!", (100, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
         # draw the text and timestamp on the frame
-        cv2.putText(colorFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+        cv2.putText(colorFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
         # Show images
         cv2.imshow('RealSense Color Image', colorFrame)
 
         # Record if the user presses a key
         key = cv2.waitKey(1) & 0xFF
+
+        # if the 's' key is selected, we are going to "select" a bounding box to track
+        if key == ord("s"):
+            # select the bounding box of the object we want to track (make
+            # sure you press ENTER or SPACE after selecting the ROI)
+            bbox = cv2.selectROI("BBOX Selector", colorFrame, fromCenter=False)
+            tracker.init(colorFrame, bbox)
+            cv2.destroyWindow("BBOX Selector")
 
         # if the `q` key is pressed, break from the lop
         if key == ord("q"):

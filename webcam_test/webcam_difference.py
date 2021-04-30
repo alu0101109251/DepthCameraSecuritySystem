@@ -1,7 +1,10 @@
+import datetime
+
 import cv2
 import imutils
+import pyttsx3
+import threading
 import numpy as np
-import pyrealsense2 as rs
 
 # Constants
 AREA_THRESHOLD = 10000
@@ -17,27 +20,21 @@ def is_out_of_bounds(px, py, weight, height):
     return False
 
 
-# Intel RealSense Camera Pipeline Configuration
-pipeline = rs.pipeline(ctx=rs.context())
-config = rs.config()
-config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
-config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
-pipeline.start(config)
+# Configure Webcam
+vid = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
 # Initialize first frame
 firstFrame = None
 
 try:
     while True:
-        # Wait for a coherent pair of frames: depth and color
-        frames = pipeline.wait_for_frames()
-        colorFrame = frames.get_color_frame()
+        # Grab frame from webcam
+        ret, colorFrame = vid.read()
+        mask = None
 
-        if not colorFrame:
+        if not ret:
             continue
 
-        # Convert images to numpy arrays
-        colorFrame = np.asanyarray(colorFrame.get_data())
         securityFrame = colorFrame.copy()
 
         # Convert it to grayscale, and blur it
@@ -56,7 +53,7 @@ try:
 
         # compute the absolute difference between the current frame and first frame
         frameDelta = cv2.absdiff(firstFrame, gray)
-        thresh = cv2.threshold(frameDelta, 25, 255, cv2.THRESH_BINARY)[1]
+        thresh = cv2.threshold(frameDelta, 75, 255, cv2.THRESH_BINARY)[1]
         # thresh = cv2.adaptiveThreshold(frameDelta,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
 
         # dilate the thresholded image to fill in holes, then find contours on thresholded image
@@ -78,7 +75,7 @@ try:
                 text = "Alarm"
 
         # draw the text and timestamp on the frame
-        cv2.putText(securityFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+        cv2.putText(securityFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
         # Show images
         cv2.imshow("Security Feed", securityFrame)
@@ -96,5 +93,5 @@ try:
 finally:
 
     # cleanup the camera and close any open windows
-    pipeline.stop()
+    vid.release()
     cv2.destroyAllWindows()

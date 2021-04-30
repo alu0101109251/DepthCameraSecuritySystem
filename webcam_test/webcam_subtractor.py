@@ -1,19 +1,13 @@
-import datetime
-
 import cv2
-import imutils
-import pyttsx3
-import threading
-import numpy as np
 
 # Constants
 AREA_THRESHOLD = 5000
 
 # Configure Webcam
-vid = cv2.VideoCapture(0)
+vid = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
 # Background Subtraction
-background_subtractor = cv2.createBackgroundSubtractorMOG2(history=150, varThreshold=25, detectShadows=True)
+background_subtractor = cv2.createBackgroundSubtractorMOG2(history=5000, varThreshold=150, detectShadows=True)
 
 while cv2.waitKey(40) != ord(' '):
     _, tempFrame = vid.read()
@@ -33,7 +27,7 @@ try:
 
         # Defining safe zone and initial text
         text = "No Alarm"
-        roi = cv2.rectangle(colorFrame, (50, 50), (350, 350), (0, 0, 0), 2)
+        roi = cv2.rectangle(colorFrame, (50, 50), (350, 350), (0, 0, 255), 2, 1)
 
         # Foreground Mask
         mask = background_subtractor.apply(colorFrame, mask, 0.0)
