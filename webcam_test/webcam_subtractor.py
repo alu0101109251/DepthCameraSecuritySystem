@@ -13,10 +13,10 @@ AREA_THRESHOLD = 5000
 vid = cv2.VideoCapture(0)
 
 # Background Subtraction
-background_subtractor = cv2.createBackgroundSubtractorMOG2(history=10000, varThreshold=25, detectShadows=True)
+background_subtractor = cv2.createBackgroundSubtractorMOG2(history=150, varThreshold=25, detectShadows=True)
 
 while cv2.waitKey(40) != ord(' '):
-    ret, tempFrame = vid.read()
+    _, tempFrame = vid.read()
     cv2.imshow("Background Detection", tempFrame)
     background_subtractor.apply(tempFrame, 0.5)
 
@@ -54,6 +54,7 @@ try:
 
             if x <= 50 or y <= 50 or (x + w) >= 350 or (y + h) >= 350:
                 text = "Alarm"
+
         # draw the text and timestamp on the frame
         cv2.putText(colorFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 

@@ -1,11 +1,7 @@
 import pyrealsense2 as rs
 import numpy as np
 import cv2
-from imutils.video import VideoStream
-import argparse
-import datetime
-import imutils
-import time
+
 
 # Configure depth and color streams
 pipeline = rs.pipeline()
@@ -20,6 +16,7 @@ firstFrame = np.asanyarray(frames.get_color_frame().get_data())
 
 if firstFrame is None:
     pipeline.stop()
+    exit(1)
 
 # Tracker
 tracker = cv2.TrackerCSRT_create()
