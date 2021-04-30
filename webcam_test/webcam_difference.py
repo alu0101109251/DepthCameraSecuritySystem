@@ -1,10 +1,5 @@
-import datetime
-
 import cv2
 import imutils
-import pyttsx3
-import threading
-import numpy as np
 
 # Constants
 AREA_THRESHOLD = 10000
