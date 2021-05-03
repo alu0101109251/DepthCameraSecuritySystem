@@ -24,7 +24,15 @@ config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
 pipeline.start(config)
 
 # Background Subtraction
-background_subtractor = cv2.createBackgroundSubtractorMOG2(history=150, varThreshold=150, detectShadows=True)
+backgroundSubtractor = cv2.createBackgroundSubtractorMOG2(history=150, varThreshold=150, detectShadows=True)
+
+while cv2.waitKey(40) != ord(' '):
+    frames = pipeline.wait_for_frames()
+    tempFrame = np.asanyarray(frames.get_color_frame().get_data())
+    cv2.imshow("Background Detection", tempFrame)
+    backgroundSubtractor.apply(tempFrame, 0.5)
+
+cv2.destroyWindow("Background Detection")
 
 try:
     while True:
@@ -41,11 +49,11 @@ try:
 
         # Defining safe zone and initial text
         text = "No Alarm"
-        roi = cv2.rectangle(colorFrame, (50, 50), (350, 350), (0, 0, 255), 2, 1)
+        safeZone = cv2.rectangle(colorFrame, (50, 50), (350, 350), (0, 0, 255), 2, 1)
 
         # Foreground Mask
         mask = None
-        mask = background_subtractor.apply(colorFrame, mask, 0.0)
+        mask = backgroundSubtractor.apply(colorFrame, mask, 0.0)
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (21, 21)))
         mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (21, 21)))
         # _, mask = cv2.threshold(mask, 25, 255, cv2.THRESH_BINARY)
@@ -64,8 +72,7 @@ try:
                 text = "Alarm"
 
         # draw the text and timestamp on the frame
-        cv2.putText(colorFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255),
-                    2)
+        cv2.putText(colorFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
         # Show images
         cv2.imshow('Foreground Mask', mask)
