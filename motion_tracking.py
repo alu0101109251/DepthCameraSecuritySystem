@@ -2,6 +2,11 @@ import pyrealsense2 as rs
 import numpy as np
 import cv2
 
+# CONSTANTS
+RED = (0, 0, 255)
+BLUE = (255, 0, 0)
+GREEN = (0, 255, 0)
+
 # Safe Zone Coordinates
 (szx, szy, szw, szh) = (50, 50, 300, 300)
 
@@ -39,7 +44,7 @@ try:
 
         # Defining safe zone and initial text
         text = "No Alarm"
-        safeZone = cv2.rectangle(colorFrame, (szx, szy), (szx + szw, szy + szh), (0, 0, 255), 2, 1)
+        safeZone = cv2.rectangle(colorFrame, (szx, szy), (szx + szw, szy + szh), RED, 2, 1)
 
         if bbox is not None:
             # Update tracker
@@ -49,16 +54,17 @@ try:
             if success:
                 # Tracking success
                 (x, y, w, h) = [int(p) for p in bbox]
-                cv2.rectangle(colorFrame, (x, y), (x + w, y + h), (0, 255, 0), 2, 1)
+                cv2.rectangle(colorFrame, (x, y), (x + w, y + h), GREEN, 2, 1)
 
                 if is_out_of_bounds(x, y, w, h):
                     text = "Alarm"
             else:
                 # Tracking failure
-                cv2.putText(colorFrame, "Tracking failure!", (100, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+                cv2.putText(colorFrame, "Tracking failure!", (100, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.5, RED, 2)
 
         # draw the text and timestamp on the frame
-        cv2.putText(colorFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+        cv2.putText(colorFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, BLUE, 2)
+        cv2.putText(colorFrame, "CSRT Tracker", (10, colorFrame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, BLUE, 1)
 
         # Show images
         cv2.imshow('RealSense Color Image', colorFrame)

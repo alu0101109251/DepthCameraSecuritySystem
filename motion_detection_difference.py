@@ -5,6 +5,9 @@ import pyrealsense2 as rs
 
 # Constants
 AREA_THRESHOLD = 10000
+RED = (0, 0, 255)
+BLUE = (255, 0, 0)
+GREEN = (0, 255, 0)
 
 # Safe Zone Coordinates
 (szx, szy, szw, szh) = (50, 50, 300, 300)
@@ -72,13 +75,15 @@ try:
 
             # compute the bounding box for the contour, draw it on the frame, and update the text
             (x, y, w, h) = cv2.boundingRect(c)
-            boundingRect = cv2.rectangle(securityFrame, (x, y), (x + w, y + h), (0, 255, 0), 2, 1)
+            boundingRect = cv2.rectangle(securityFrame, (x, y), (x + w, y + h), GREEN, 2, 1)
 
             if is_out_of_bounds(x, y, w, h):
                 text = "Alarm"
 
         # draw the text and timestamp on the frame
-        cv2.putText(securityFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+        cv2.putText(securityFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, BLUE, 2)
+        cv2.putText(colorFrame, "Absolute Difference Motion Detection", (10, colorFrame.shape[0] - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.35, BLUE, 1)
 
         # Show images
         cv2.imshow("Security Feed", securityFrame)

@@ -4,6 +4,9 @@ import pyrealsense2 as rs
 
 # Constants
 AREA_THRESHOLD = 5000
+RED = (0, 0, 255)
+BLUE = (255, 0, 0)
+GREEN = (0, 255, 0)
 
 # Safe Zone Coordinates
 (szx, szy, szw, szh) = (50, 50, 300, 300)
@@ -49,7 +52,7 @@ try:
 
         # Defining safe zone and initial text
         text = "No Alarm"
-        safeZone = cv2.rectangle(colorFrame, (50, 50), (350, 350), (0, 0, 255), 2, 1)
+        safeZone = cv2.rectangle(colorFrame, (50, 50), (350, 350), RED, 2, 1)
 
         # Foreground Mask
         mask = None
@@ -66,13 +69,15 @@ try:
 
             # compute the bounding box for the contour, draw it on the frame, and update the text
             (x, y, w, h) = cv2.boundingRect(cnt)
-            cv2.rectangle(colorFrame, (x, y), (x + w, y + h), (0, 255, 0), 3)
+            cv2.rectangle(colorFrame, (x, y), (x + w, y + h), GREEN, 3)
 
             if is_out_of_bounds(x, y, w, h):
                 text = "Alarm"
 
         # draw the text and timestamp on the frame
-        cv2.putText(colorFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+        cv2.putText(colorFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, BLUE, 2)
+        cv2.putText(colorFrame, "MOG2 Background Subtraction", (10, colorFrame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX,
+                    0.35, BLUE, 1)
 
         # Show images
         cv2.imshow('Foreground Mask', mask)
