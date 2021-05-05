@@ -29,6 +29,14 @@ pipeline.start(config)
 
 # Initialize first frame
 firstFrame = None
+while cv2.waitKey(40) != ord(' '):
+    frames = pipeline.wait_for_frames()
+    firstFrame = np.asanyarray(frames.get_color_frame().get_data())
+    cv2.imshow("Background Selection", firstFrame)
+
+firstFrame = cv2.cvtColor(firstFrame, cv2.COLOR_BGR2GRAY)
+firstFrame = cv2.GaussianBlur(firstFrame, (21, 21), 0)
+cv2.destroyWindow("Background Selection")
 
 try:
     while True:
@@ -41,7 +49,6 @@ try:
 
         # Convert images to numpy arrays
         colorFrame = np.asanyarray(colorFrame.get_data())
-        securityFrame = colorFrame.copy()
 
         # Convert it to grayscale, and blur it
         gray = cv2.cvtColor(colorFrame, cv2.COLOR_BGR2GRAY)
@@ -50,7 +57,7 @@ try:
 
         # Defining safe zone and initial text
         text = "No Alarm"
-        safeZone = cv2.rectangle(securityFrame, (szx, szy), (szx + szw, szy + szh), (0, 0, 255), 2, 1)
+        safeZone = cv2.rectangle(colorFrame, (szx, szy), (szx + szw, szy + szh), (0, 0, 255), 2, 1)
 
         # if the first frame is None, initialize it
         if firstFrame is None:
@@ -75,21 +82,21 @@ try:
 
             # compute the bounding box for the contour, draw it on the frame, and update the text
             (x, y, w, h) = cv2.boundingRect(c)
-            boundingRect = cv2.rectangle(securityFrame, (x, y), (x + w, y + h), GREEN, 2, 1)
+            boundingRect = cv2.rectangle(colorFrame, (x, y), (x + w, y + h), GREEN, 2, 1)
 
             if is_out_of_bounds(x, y, w, h):
                 text = "Alarm"
 
         # draw the text and timestamp on the frame
-        cv2.putText(securityFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, BLUE, 2)
+        cv2.putText(colorFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, BLUE, 2)
         cv2.putText(colorFrame, "Absolute Difference Motion Detection", (10, colorFrame.shape[0] - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.35, BLUE, 1)
 
         # Show images
-        cv2.imshow("Security Feed", securityFrame)
-        cv2.imshow("First Frame", firstFrame)
-        cv2.imshow("Gray", gray)
-        cv2.imshow("Thresh", thresh)
+        cv2.imshow('RealSense Color Image', colorFrame)
+        # cv2.imshow("First Frame", firstFrame)
+        # cv2.imshow("Gray", gray)
+        # cv2.imshow("Thresh", thresh)
 
         # Record if the user presses a key
         key = cv2.waitKey(1) & 0xFF

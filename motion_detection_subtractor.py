@@ -27,7 +27,7 @@ config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
 pipeline.start(config)
 
 # Background Subtraction
-backgroundSubtractor = cv2.createBackgroundSubtractorMOG2(history=150, varThreshold=150, detectShadows=True)
+backgroundSubtractor = cv2.createBackgroundSubtractorMOG2(history=500, varThreshold=25, detectShadows=True)
 
 while cv2.waitKey(40) != ord(' '):
     frames = pipeline.wait_for_frames()
@@ -80,7 +80,7 @@ try:
                     0.35, BLUE, 1)
 
         # Show images
-        cv2.imshow('Foreground Mask', mask)
+        # cv2.imshow('Foreground Mask', mask)
         cv2.imshow('RealSense Color Image', colorFrame)
 
         # Record if the user presses a key
