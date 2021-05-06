@@ -122,7 +122,7 @@ Contributions are what make the open source community such an amazing place to b
 <!-- LICENSE -->
 ## License
 
-Distributed under the Creative Commons Attribution-ShareAlike 4.0 International License. See `LICENSE` for more information.
+Distributed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. See `LICENSE` for more information.
 
 [![CC BY-SA 4.0][license-img]][license-url]
 
@@ -158,5 +158,5 @@ Project Link: [https://github.com/alu0101109251/RealidadVirtual](https://github.
 [issues-shield]: https://img.shields.io/github/issues/github_username/repo.svg?style=for-the-badge
 [issues-url]: https://github.com/github_username/repo/issues
 [license-shield]: https://img.shields.io/github/license/github_username/repo.svg?style=for-the-badge
-[license-url]: http://creativecommons.org/licenses/by-sa/4.0/
-[license-img]: https://licensebuttons.net/l/by-sa/4.0/88x31.png
+[license-url]: http://creativecommons.org/licenses/by-nc-sa/4.0/
+[license-img]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
