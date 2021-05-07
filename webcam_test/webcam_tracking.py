@@ -1,4 +1,6 @@
 import cv2
+import winsound
+import threading
 
 # Safe Zone Coordinates
 (szx, szy, szw, szh) = (50, 50, 300, 300)
@@ -9,11 +11,19 @@ vid = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 # Tracker
 tracker = cv2.TrackerCSRT_create()
 bbox = None
+alarmList = [None, None]
+
+
+def beep():
+    winsound.Beep(frequency=2500, duration=750)
+
 
 try:
     while True:
         # Grab frame from webcam
         ret, colorFrame = vid.read()
+        cv2.flip(colorFrame, 1, colorFrame)
+        alarm = 0
 
         if not ret:
             continue
@@ -34,9 +44,15 @@ try:
 
                 if x <= szx or y <= szy or (x + w) >= (szx + szw) or (y + h) >= (szy + szh):
                     text = "Alarm"
+                    alarm = 1
+
             else:
                 # Tracking failure
                 cv2.putText(colorFrame, "Tracking failure", (100, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+
+        alarmList.append(alarm)
+        if alarmList[-1] == 1 and alarmList[-2] == 0:
+            threading.Thread(target=beep()).start()
 
         # draw the text and timestamp on the frame
         cv2.putText(colorFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)

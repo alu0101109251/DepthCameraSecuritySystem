@@ -97,7 +97,7 @@ try:
         # cv2.imshow("Gray Image", gray)
         cv2.imshow("Security Feed", color_frame)
         # cv2.imshow("Thresh", thresh)
-        # cv2.imshow("Frame Delta", frameDelta)
+        # cv2.imshow("Frame Delta", deltaFrame)
 
         # Record if the user presses a key
         key = cv2.waitKey(1) & 0xFF

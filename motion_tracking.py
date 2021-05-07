@@ -32,38 +32,42 @@ bbox = None
 try:
     while True:
 
-        # Wait for a coherent pair of frames: depth and color
+        # Wait for coherent frames and grab color frame
         frames = pipeline.wait_for_frames()
         colorFrame = frames.get_color_frame()
 
+        # Check if a frame was successfully received
         if not colorFrame:
             continue
 
         # Convert images to numpy arrays
         colorFrame = np.asanyarray(colorFrame.get_data())
 
-        # Defining safe zone and initial text
-        text = "No Alarm"
+        # Draw safe zone and set initial status text
+        text = "Safe"
         safeZone = cv2.rectangle(colorFrame, (szx, szy), (szx + szw, szy + szh), RED, 2, 1)
 
+        # Check if tracker is initialized
         if bbox is not None:
             # Update tracker
             success, bbox = tracker.update(colorFrame)
 
-            # Draw bounding box
+            # Tracking Success
             if success:
-                # Tracking success
+                # Grab the bounding box and draw it on the frame
                 (x, y, w, h) = [int(p) for p in bbox]
                 cv2.rectangle(colorFrame, (x, y), (x + w, y + h), GREEN, 2, 1)
 
+                # Check if the bounding box is out of the safe zone
                 if is_out_of_bounds(x, y, w, h):
                     text = "Alarm"
+
+            # Tracking failure
             else:
-                # Tracking failure
                 cv2.putText(colorFrame, "Tracking failure!", (100, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.5, RED, 2)
 
-        # draw the text and timestamp on the frame
-        cv2.putText(colorFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, BLUE, 2)
+        # Draw status text and detection technique in the frame
+        cv2.putText(colorFrame, "Zone Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, BLUE, 2)
         cv2.putText(colorFrame, "CSRT Tracker", (10, colorFrame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, BLUE, 1)
 
         # Show images
@@ -72,15 +76,14 @@ try:
         # Record if the user presses a key
         key = cv2.waitKey(1) & 0xFF
 
-        # if the 's' key is selected, we are going to "select" a bounding box to track
+        # Press 's' to select ROI to track.
+        # Make selection using the mouse and press ENTER or SPACE
         if key == ord("s"):
-            # select the bounding box of the object we want to track (make
-            # sure you press ENTER or SPACE after selecting the ROI)
             bbox = cv2.selectROI("BBOX Selector", colorFrame, fromCenter=False)
             tracker.init(colorFrame, bbox)
             cv2.destroyWindow("BBOX Selector")
 
-        # if the `q` key is pressed, break from the lop
+        # If the `q` key is pressed, break from the loop
         if key == ord("q"):
             break
 

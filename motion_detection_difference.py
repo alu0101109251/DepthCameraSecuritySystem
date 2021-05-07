@@ -1,5 +1,4 @@
 import cv2
-import imutils
 import numpy as np
 import pyrealsense2 as rs
 
@@ -29,6 +28,8 @@ pipeline.start(config)
 
 # Initialize first frame
 firstFrame = None
+
+# Press SPACE to select the background frame
 while cv2.waitKey(40) != ord(' '):
     frames = pipeline.wait_for_frames()
     firstFrame = np.asanyarray(frames.get_color_frame().get_data())
@@ -40,73 +41,71 @@ cv2.destroyWindow("Background Selection")
 
 try:
     while True:
-        # Wait for a coherent pair of frames: depth and color
+
+        # Wait for coherent frames and grab color frame
         frames = pipeline.wait_for_frames()
         colorFrame = frames.get_color_frame()
 
+        # Check if a frame was successfully received
         if not colorFrame:
             continue
 
-        # Convert images to numpy arrays
+        # Convert image to numpy arrays
         colorFrame = np.asanyarray(colorFrame.get_data())
 
-        # Convert it to grayscale, and blur it
-        gray = cv2.cvtColor(colorFrame, cv2.COLOR_BGR2GRAY)
-        gray = cv2.GaussianBlur(gray, (21, 21), 0)
+        # Convert it to grayscale and blur it
+        grayFrame = cv2.cvtColor(colorFrame, cv2.COLOR_BGR2GRAY)
+        grayFrame = cv2.GaussianBlur(grayFrame, (21, 21), 0)
         # gray = cv2.normalize(gray, gray, 0, 255, cv2.NORM_MINMAX)
 
-        # Defining safe zone and initial text
-        text = "No Alarm"
-        safeZone = cv2.rectangle(colorFrame, (szx, szy), (szx + szw, szy + szh), (0, 0, 255), 2, 1)
+        # Draw safe zone and set initial status text
+        text = "Safe"
+        safeZone = cv2.rectangle(colorFrame, (szx, szy), (szx + szw, szy + szh), RED, 2, 1)
 
-        # if the first frame is None, initialize it
-        if firstFrame is None:
-            firstFrame = gray
-            continue
+        # Compute the absolute difference between current frame and first frame
+        deltaFrame = cv2.absdiff(firstFrame, grayFrame)
 
-        # compute the absolute difference between the current frame and first frame
-        frameDelta = cv2.absdiff(firstFrame, gray)
-        thresh = cv2.threshold(frameDelta, 25, 255, cv2.THRESH_BINARY)[1]
-        # thresh = cv2.adaptiveThreshold(frameDelta,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
+        # Threshold the image and clean up
+        threshFrame = cv2.threshold(deltaFrame, 25, 255, cv2.THRESH_BINARY)[1]
+        # thresh = cv2.adaptiveThreshold(deltaFrame,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
+        threshFrame = cv2.dilate(threshFrame, None, iterations=2)
 
-        # dilate the thresholded image to fill in holes, then find contours on thresholded image
-        thresh = cv2.dilate(thresh, None, iterations=2)
-        contours = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        contours = imutils.grab_contours(contours)
-
-        # loop over the contours
+        # Grab and filter contours.
+        contours, _ = cv2.findContours(threshFrame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         for c in contours:
-            # if the contour is too small, ignore it
+            # Calculate area and remove small elements
             if cv2.contourArea(c) < AREA_THRESHOLD:
                 continue
 
-            # compute the bounding box for the contour, draw it on the frame, and update the text
+            # Compute the bounding box for the contour and draw it on the frame
             (x, y, w, h) = cv2.boundingRect(c)
-            boundingRect = cv2.rectangle(colorFrame, (x, y), (x + w, y + h), GREEN, 2, 1)
+            cv2.rectangle(colorFrame, (x, y), (x + w, y + h), GREEN, 2, 1)
 
+            # Check if the bounding box is out of the safe zone
             if is_out_of_bounds(x, y, w, h):
                 text = "Alarm"
 
-        # draw the text and timestamp on the frame
-        cv2.putText(colorFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, BLUE, 2)
+        # Draw status text and detection technique in the frame
+        cv2.putText(colorFrame, "Zone Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, BLUE, 2)
         cv2.putText(colorFrame, "Absolute Difference Motion Detection", (10, colorFrame.shape[0] - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.35, BLUE, 1)
 
         # Show images
         cv2.imshow('RealSense Color Image', colorFrame)
         # cv2.imshow("First Frame", firstFrame)
-        # cv2.imshow("Gray", gray)
-        # cv2.imshow("Thresh", thresh)
+        # cv2.imshow("Gray Frame", grayFrame)
+        # cv2.imshow("Delta Frame", deltaFrame)
+        # cv2.imshow("Thresh Frame", threshFrame)
 
         # Record if the user presses a key
         key = cv2.waitKey(1) & 0xFF
 
-        # if the `q` key is pressed, break from the lop
+        # If the `q` key is pressed, break from the loop
         if key == ord("q"):
             break
 
 finally:
 
-    # cleanup the camera and close any open windows
+    # Cleanup the camera and close any open windows
     pipeline.stop()
     cv2.destroyAllWindows()

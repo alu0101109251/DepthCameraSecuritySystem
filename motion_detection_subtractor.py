@@ -26,9 +26,10 @@ config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
 config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
 pipeline.start(config)
 
-# Background Subtraction
+# Initialize Background Subtractor
 backgroundSubtractor = cv2.createBackgroundSubtractorMOG2(history=500, varThreshold=25, detectShadows=True)
 
+# Let subtractor learn the background model and press SPACE
 while cv2.waitKey(40) != ord(' '):
     frames = pipeline.wait_for_frames()
     tempFrame = np.asanyarray(frames.get_color_frame().get_data())
@@ -40,58 +41,63 @@ cv2.destroyWindow("Background Detection")
 try:
     while True:
 
-        # Wait for a coherent pair of frames: depth and color
+        # Wait for coherent frames and grab color frame
         frames = pipeline.wait_for_frames()
         colorFrame = frames.get_color_frame()
 
+        # Check if a frame was successfully received
         if not colorFrame:
             continue
 
-        # Convert images to numpy arrays
+        # Convert image to numpy arrays
         colorFrame = np.asanyarray(colorFrame.get_data())
 
-        # Defining safe zone and initial text
-        text = "No Alarm"
-        safeZone = cv2.rectangle(colorFrame, (50, 50), (350, 350), RED, 2, 1)
+        # Draw safe zone and set initial status text
+        text = "Safe"
+        safeZone = cv2.rectangle(colorFrame, (szx, szy), (szx + szw, szy + szh), RED, 2, 1)
 
-        # Foreground Mask
+        # Create Foreground Mask
         mask = None
         mask = backgroundSubtractor.apply(colorFrame, mask, 0.0)
+
+        # Apply morphological operations to clean up the mask
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (21, 21)))
         mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (21, 21)))
         # _, mask = cv2.threshold(mask, 25, 255, cv2.THRESH_BINARY)
 
+        # Grab and filter contours.
         contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        for cnt in contours:
+        for c in contours:
             # Calculate area and remove small elements
-            if cv2.contourArea(cnt) < AREA_THRESHOLD:
+            if cv2.contourArea(c) < AREA_THRESHOLD:
                 continue
 
-            # compute the bounding box for the contour, draw it on the frame, and update the text
-            (x, y, w, h) = cv2.boundingRect(cnt)
-            cv2.rectangle(colorFrame, (x, y), (x + w, y + h), GREEN, 3)
+            # Compute the bounding box for the contour and draw it on the frame
+            (x, y, w, h) = cv2.boundingRect(c)
+            cv2.rectangle(colorFrame, (x, y), (x + w, y + h), GREEN, 2, 1)
 
+            # Check if the bounding box is out of the safe zone
             if is_out_of_bounds(x, y, w, h):
                 text = "Alarm"
 
-        # draw the text and timestamp on the frame
-        cv2.putText(colorFrame, "Room Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, BLUE, 2)
+        # Draw status text and detection technique in the frame
+        cv2.putText(colorFrame, "Zone Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, BLUE, 2)
         cv2.putText(colorFrame, "MOG2 Background Subtraction", (10, colorFrame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX,
                     0.35, BLUE, 1)
 
         # Show images
-        # cv2.imshow('Foreground Mask', mask)
         cv2.imshow('RealSense Color Image', colorFrame)
+        # cv2.imshow('Foreground Mask', mask)
 
         # Record if the user presses a key
         key = cv2.waitKey(1) & 0xFF
 
-        # if the `q` key is pressed, break from the lop
+        # If the `q` key is pressed, break from the loop
         if key == ord("q"):
             break
 
 finally:
 
-    # cleanup the camera and close any open windows
+    # Cleanup the camera and close any open windows
     pipeline.stop()
     cv2.destroyAllWindows()
