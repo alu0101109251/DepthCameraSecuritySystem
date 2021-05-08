@@ -1,17 +1,3 @@
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Thanks again! Now go create something AMAZING! :D
-***
-***
-***
-*** To avoid retyping too much info. Do a search and replace for the following:
-*** github_username, repo_name, twitter_handle, email, project_title, project_description
--->
-
-
-
 <!-- PROJECT SHIELDS -->
 <!--
 *** I'm using markdown "reference style" links for readability.
@@ -122,7 +108,7 @@ Contributions are what make the open source community such an amazing place to b
 <!-- LICENSE -->
 ## License
 
-Distributed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. See `LICENSE` for more information.
+Distributed under the Creative Commons Attribution-ShareAlike 4.0 International License. See `LICENSE` for more information.
 
 [![CC BY-SA 4.0][license-img]][license-url]
 
@@ -149,14 +135,14 @@ Project Link: [https://github.com/alu0101109251/RealidadVirtual](https://github.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/github_username/repo/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/github_username/repo.svg?style=for-the-badge
-[forks-url]: https://github.com/github_username/repo/network/members
-[stars-shield]: https://img.shields.io/github/stars/github_username/repo.svg?style=for-the-badge
-[stars-url]: https://github.com/github_username/repo/stargazers
-[issues-shield]: https://img.shields.io/github/issues/github_username/repo.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/alu0101109251/DepthCameraSecuritySystem.svg?style=for-the-badge
+[contributors-url]: https://github.com/alu0101109251/DepthCameraSecuritySystem/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/alu0101109251/DepthCameraSecuritySystem.svg?style=for-the-badge
+[forks-url]: https://github.com/alu0101109251/DepthCameraSecuritySystem/network/members
+[stars-shield]: https://img.shields.io/github/stars/alu0101109251/DepthCameraSecuritySystem.svg?style=for-the-badge
+[stars-url]: https://github.com/alu0101109251/DepthCameraSecuritySystem/stargazers
+[issues-shield]: https://img.shields.io/github/issues/alu0101109251/DepthCameraSecuritySystem.svg?style=for-the-badge
 [issues-url]: https://github.com/github_username/repo/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo.svg?style=for-the-badge
-[license-url]: http://creativecommons.org/licenses/by-nc-sa/4.0/
-[license-img]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
+[license-shield]: https://img.shields.io/github/license/alu0101109251/DepthCameraSecuritySystem.svg?style=for-the-badge
+[license-url]: http://creativecommons.org/licenses/by-sa/4.0/
+[license-img]: https://licensebuttons.net/l/by-sa/4.0/88x31.png
