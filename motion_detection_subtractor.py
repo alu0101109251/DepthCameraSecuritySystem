@@ -1,6 +1,15 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""Motion Detection using MOG2 Background Subtraction."""
+
 import cv2
 import numpy as np
 import pyrealsense2 as rs
+
+__author__ = "Javier Alonso Delgado"
+__license__ = "CC-BY-SA-4.0"
+__version__ = "1.0"
+__email__ = "alu0101109251@ull.edu.es"
 
 # Constants
 AREA_THRESHOLD = 5000

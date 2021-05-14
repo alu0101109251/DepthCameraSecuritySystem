@@ -1,6 +1,15 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""Motion Tracking using CSRT Tracker."""
+
 import pyrealsense2 as rs
 import numpy as np
 import cv2
+
+__author__ = "Javier Alonso Delgado"
+__license__ = "CC-BY-SA-4.0"
+__version__ = "1.0"
+__email__ = "alu0101109251@ull.edu.es"
 
 # CONSTANTS
 RED = (0, 0, 255)
