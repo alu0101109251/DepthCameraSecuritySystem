@@ -5,6 +5,8 @@
 import cv2
 import numpy as np
 import pyrealsense2 as rs
+import winsound
+import threading
 
 __author__ = "Javier Alonso Delgado"
 __license__ = "CC-BY-SA-4.0"
@@ -21,11 +23,16 @@ GREEN = (0, 255, 0)
 (szx, szy, szw, szh) = (50, 50, 300, 300)
 
 
-# Check is rectangle is out of safe zone
+# Checks is rectangle is out of safe zone
 def is_out_of_bounds(px, py, weight, height):
     if px <= szx or py <= szy or (px + weight) >= (szx + szw) or (py + height) >= (szy + szh):
         return True
     return False
+
+
+# Makes beep sound using Windows API
+def beep():
+    winsound.Beep(frequency=2500, duration=750)
 
 
 # Intel RealSense Camera Pipeline Configuration
@@ -37,6 +44,7 @@ pipeline.start(config)
 
 # Initialize first frame
 firstFrame = None
+alarmList = [None, None]
 
 # Press SPACE to select the background frame
 while cv2.waitKey(40) != ord(' '):
@@ -68,6 +76,7 @@ try:
         # gray = cv2.normalize(gray, gray, 0, 255, cv2.NORM_MINMAX)
 
         # Draw safe zone and set initial status text
+        alarm = 0
         text = "Safe"
         safeZone = cv2.rectangle(colorFrame, (szx, szy), (szx + szw, szy + szh), RED, 2, 1)
 
@@ -93,6 +102,12 @@ try:
             # Check if the bounding box is out of the safe zone
             if is_out_of_bounds(x, y, w, h):
                 text = "Alarm"
+                alarm = 1
+
+        # If there is a 'no alarm' to 'alarm' situation, trigger sound
+        alarmList.append(alarm)
+        if alarmList[-1] == 1 and alarmList[-2] == 0:
+            threading.Thread(target=beep()).start()
 
         # Draw status text and detection technique in the frame
         cv2.putText(colorFrame, "Zone Status: {}".format(text), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, BLUE, 2)
