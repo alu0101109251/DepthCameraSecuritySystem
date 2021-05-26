@@ -16,6 +16,9 @@
     * [Prerequisites](#prerequisites)
     * [Installation](#installation)
 - [3. Usage](#usage)
+    * [Absolute Difference Motion Detection](#absolute-difference-motion-detection)
+    * [MOG2 Subtractor Motion Detection](#mog2-subtractor-motion-detection)
+    * [CSRT Motion Tracking](#csrt-motion-tracking)
 - [4. Roadmap](#roadmap)
 - [5. Contributing](#contributing)
 - [6. License](#license)
@@ -80,7 +83,22 @@ Depending on the situation and scenario, choose the approach which works better 
 
 ### Absolute Difference Motion Detection
 
+This method is based on image difference technique.
 
+Using grayscale blurred images, it generates a foreground mask by subtracting the current frame with the background frame.
+
+After that, it applies a threshold to clean the mask, then motion contours are found and drawn.
+
+1. Start [motion_detection_difference](motion_detection_difference.py) script
+
+2. Background selection windows will open.
+    * Be sure that the monitored area is empty.
+    * Select the background model by pressing `SPACE`
+
+3. Motion detection windows will open.
+   * Now move inside the monitored area to see the detection.
+
+![motion_detection_difference](images/detectionDif.PNG)
 
 ### MOG2 Subtractor Motion Detection
 
