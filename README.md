@@ -1,11 +1,4 @@
 <!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -15,8 +8,7 @@
 
 
 <!-- TABLE OF CONTENTS -->
-<!-- TABLE OF CONTENTS -->
-## Índice de Contenido
+## Table of Contents
 
 - [1. About The Project](#about-the-project)
     * [Built With](#built-with)
@@ -35,18 +27,19 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+The main objective of this work is the development of a security system which allows real time monitoring 
+of people's location.
 
-Here's a blank template to get started:
-**To avoid retyping too much info. Do a search and replace with your text editor for the following:**
-`github_username`, `repo_name`, `twitter_handle`, `email`, `project_title`, `project_description`
+Using a depth camera as well as image processing libraries such as OpenCV, it is proposed to define a safe area where 
+a person can move freely, establishing a tracking system with alarm alerts integrated to trigger in cases where he 
+could go out of bounds of the risk free enclosure. 
+
 
 
 ### Built With
 
-* []()
-* []()
-* []()
+* [OpenCV](https://pypi.org/project/opencv-python/)
+* [Intel RealSense SDK](https://pypi.org/project/pyrealsense2/)
 
 
 
@@ -58,20 +51,20 @@ To get a local copy up and running follow these simple steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
+* pipenv
   ```sh
-  npm install npm@latest -g
+  pip install pipenv
   ```
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/alu0101109251/DepthCameraSecuritySystem.git
    ```
-2. Install NPM packages
+2. Install PipEnv packages
    ```sh
-   npm install
+   pipenv install
    ```
 
 
@@ -79,16 +72,27 @@ This is an example of how to list things you need to use the software and how to
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+There are 3 main scripts implemented, using different motion detection and tracking techniques.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+Depending on the situation and scenario, choose the approach which works better for you.
 
+
+
+### Absolute Difference Motion Detection
+
+
+
+### MOG2 Subtractor Motion Detection
+
+
+
+### CSRT Motion Tracking
 
 
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/alu0101109251/DepthCameraSecuritySystem/issues) for a list of proposed features (and known issues).
 
 
 
@@ -108,9 +112,12 @@ Contributions are what make the open source community such an amazing place to b
 <!-- LICENSE -->
 ## License
 
-Distributed under the Creative Commons Attribution-ShareAlike 4.0 International License. See `LICENSE` for more information.
+Distributed under the _Creative Commons Attribution-ShareAlike 4.0 International License_. 
 
 [![CC BY-SA 4.0][license-img]][license-url]
+
+See [`LICENSE`](LICENSE) for more information.
+
 
 
 <!-- CONTACT -->
@@ -118,23 +125,19 @@ Distributed under the Creative Commons Attribution-ShareAlike 4.0 International 
 
 Javier Alonso Delgado  - alu0101109251@ull.edu.es
 
-Project Link: [https://github.com/alu0101109251/RealidadVirtual](https://github.com/alu0101109251/RealidadVirtual)
+Project Link: [https://github.com/alu0101109251/DepthCameraSecuritySystem](https://github.com/alu0101109251/DepthCameraSecuritySystem)
 
 
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 
-* []()
-* []()
-* []()
-
-
+* [numpy](https://numpy.org/)
+* [Shields.io](https://img.shields.io/)
 
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/alu0101109251/DepthCameraSecuritySystem.svg?style=for-the-badge
 [contributors-url]: https://github.com/alu0101109251/DepthCameraSecuritySystem/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/alu0101109251/DepthCameraSecuritySystem.svg?style=for-the-badge
