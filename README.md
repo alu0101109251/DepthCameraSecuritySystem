@@ -53,7 +53,6 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
 * pipenv
   ```sh
   pip install pipenv
@@ -99,6 +98,8 @@ After that, it applies a threshold to clean the mask, then motion contours are f
    * Now move inside the monitored area to see the detection.
 
 ![motion_detection_difference](images/detectionDif.PNG)
+
+
 
 ### MOG2 Subtractor Motion Detection
 
