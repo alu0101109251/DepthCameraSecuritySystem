@@ -86,26 +86,68 @@ This method is based on image difference technique.
 
 Using grayscale blurred images, it generates a foreground mask by subtracting the current frame with the background frame.
 
-After that, it applies a threshold to clean the mask, then motion contours are found and drawn.
+After that, it applies a threshold to clean up the mask. Then motion contours are found and drawn.
 
-1. Start [motion_detection_difference](motion_detection_difference.py) script
+1. Start [`motion_detection_difference.py`](motion_detection_difference.py) script
 
-2. Background selection windows will open.
+2. Background selection window will open.
     * Be sure that the monitored area is empty.
     * Select the background model by pressing `SPACE`
 
-3. Motion detection windows will open.
-   * Now move inside the monitored area to see the detection.
-
+3. Motion detection window will open.
+    * Now move inside the monitored area to see the detection.
+    * Press `Q` to close the program.
+    
 ![motion_detection_difference](images/detectionDif.PNG)
 
 
 
 ### MOG2 Subtractor Motion Detection
 
+This method is based on background subtraction.
+
+Using MOG2 Background Subtractor, it generates a foreground mask.
+
+After that, it applies opening and enclosing operations to clean up the mask. Then motion contours are found and drawn.
+
+1. Start [`motion_detection_subtractor.py`](motion_detection_subtractor.py) script
+
+2. Background learning window will open.
+    * Be sure that the monitored area is empty.
+    * Wait some seconds, so the algorithm can learn the background model.
+    * Press `SPACE` to finish.
+
+3. Motion detection window will open.
+   * Now move inside the monitored area to see the detection.
+    * Press `Q` to close the program.
+    
+![motion_detection_subtractor](images/mog2Detection.PNG)
+
 
 
 ### CSRT Motion Tracking
+
+This method is based on tracking.
+
+Using CSRT Tracker, select the desired object/person to track.
+
+After that, CSRT will track and draw the ROI's bounding box.
+
+1. Start [`motion_tracking.py`](motion_tracking.py) script
+
+2. Press `S` to open the ROI selection window.
+    * Select the object you want to track using the mouse.
+    * Press `ENTER` to confirm selection or `C` to cancel.
+
+3. Tracking window will open.
+    * You can reset and track a new object anytime you want by opening the ROI selection window.
+    * Press `Q` to close the program.
+    
+> NOTE: this method can only track one object at a time. 
+No other objects will be detected if you are currently tracking one.
+
+![motion_tracking](images/csrtDetection.PNG)
+
 
 
 <!-- ROADMAP -->
