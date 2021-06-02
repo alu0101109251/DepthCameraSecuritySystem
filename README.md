@@ -144,7 +144,7 @@ After that, CSRT will track and draw the ROI's bounding box.
     * Press `Q` to close the program.
     
 > NOTE: this method can only track one object at a time. 
-No other objects will be detected if you are currently tracking one.
+No other objects will be detected if you are already tracking one.
 
 ![motion_tracking](images/csrtDetection.PNG)
 
@@ -173,9 +173,10 @@ Contributions are what make the open source community such an amazing place to b
 <!-- LICENSE -->
 ## License
 
-Distributed under the _Creative Commons Attribution-ShareAlike 4.0 International License_. 
 
 [![CC BY-SA 4.0][license-img]][license-url]
+
+This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License][license-url].
 
 See [`LICENSE`](LICENSE) for more information.
 
@@ -206,7 +207,7 @@ Project Link: [https://github.com/alu0101109251/DepthCameraSecuritySystem](https
 [stars-shield]: https://img.shields.io/github/stars/alu0101109251/DepthCameraSecuritySystem.svg?style=for-the-badge
 [stars-url]: https://github.com/alu0101109251/DepthCameraSecuritySystem/stargazers
 [issues-shield]: https://img.shields.io/github/issues/alu0101109251/DepthCameraSecuritySystem.svg?style=for-the-badge
-[issues-url]: https://github.com/github_username/repo/issues
+[issues-url]: https://github.com/alu0101109251/repo/issues
 [license-shield]: https://img.shields.io/github/license/alu0101109251/DepthCameraSecuritySystem.svg?style=for-the-badge
 [license-url]: http://creativecommons.org/licenses/by-sa/4.0/
-[license-img]: https://licensebuttons.net/l/by-sa/4.0/88x31.png
+[license-img]: https://licensebuttons.net/l/by-sa/3.0/88x31.png
