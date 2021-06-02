@@ -1,9 +1,14 @@
 <!-- PROJECT SHIELDS -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![CC License][license-shield]][license-url]
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/alu0101109251/DepthCameraSecuritySystem/CodeQL?style=for-the-badge)
+[![GitHub issues](https://img.shields.io/github/issues/alu0101109251/DepthCameraSecuritySystem?style=for-the-badge)](https://github.com/alu0101109251/DepthCameraSecuritySystem/issues)
+![GitHub last commit](https://img.shields.io/github/last-commit/alu0101109251/DepthCameraSecuritySystem?style=for-the-badge)
+[![GitHub license](https://img.shields.io/github/license/alu0101109251/DepthCameraSecuritySystem?style=for-the-badge)](https://github.com/alu0101109251/DepthCameraSecuritySystem/blob/main/LICENSE)
+[![GitHub forks](https://img.shields.io/github/forks/alu0101109251/DepthCameraSecuritySystem?style=for-the-badge)](https://github.com/alu0101109251/DepthCameraSecuritySystem/network)
+[![GitHub stars](https://img.shields.io/github/stars/alu0101109251/DepthCameraSecuritySystem?style=for-the-badge)](https://github.com/alu0101109251/DepthCameraSecuritySystem/stargazers)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/alu0101109251/DepthCameraSecuritySystem?style=for-the-badge)
+![GitHub Pipenv locked Python version](https://img.shields.io/github/pipenv/locked/python-version/alu0101109251/DepthCameraSecuritySystem?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/alu0101109251/DepthCameraSecuritySystem?color=red&style=for-the-badge)
+![GitHub all releases](https://img.shields.io/github/downloads/alu0101109251/DepthCameraSecuritySystem/total?style=for-the-badge)
 
 
 
@@ -202,14 +207,5 @@ Project Link: [https://github.com/alu0101109251/DepthCameraSecuritySystem](https
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[contributors-shield]: https://img.shields.io/github/contributors/alu0101109251/DepthCameraSecuritySystem.svg?style=for-the-badge
-[contributors-url]: https://github.com/alu0101109251/DepthCameraSecuritySystem/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/alu0101109251/DepthCameraSecuritySystem.svg?style=for-the-badge
-[forks-url]: https://github.com/alu0101109251/DepthCameraSecuritySystem/network/members
-[stars-shield]: https://img.shields.io/github/stars/alu0101109251/DepthCameraSecuritySystem.svg?style=for-the-badge
-[stars-url]: https://github.com/alu0101109251/DepthCameraSecuritySystem/stargazers
-[issues-shield]: https://img.shields.io/github/issues/alu0101109251/DepthCameraSecuritySystem.svg?style=for-the-badge
-[issues-url]: https://github.com/alu0101109251/repo/issues
-[license-shield]: https://img.shields.io/github/license/alu0101109251/DepthCameraSecuritySystem.svg?style=for-the-badge
 [license-url]: http://creativecommons.org/licenses/by-sa/4.0/
 [license-img]: https://licensebuttons.net/l/by-sa/3.0/88x31.png
