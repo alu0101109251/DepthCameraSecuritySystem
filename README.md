@@ -37,6 +37,9 @@ Using a depth camera as well as image processing libraries such as OpenCV, it is
 a person can move freely, establishing a tracking system with alarm alerts integrated to trigger in cases where he 
 could go out of bounds of the risk free enclosure. 
 
+> This work is assigned as Computer Engineering thesis of University of La Laguna, and  
+it is associated with the _Virtual Historical Reconstruction Project of San Cristóbal de La Laguna_.
+
 
 
 ### Built With
@@ -54,18 +57,18 @@ To get a local copy up and running follow these simple steps.
 ### Prerequisites
 
 * pipenv
-  ```sh
+  ```shell
   pip install pipenv
   ```
 
 ### Installation
 
 1. Clone the repo
-   ```sh
+   ```shell
    git clone https://github.com/alu0101109251/DepthCameraSecuritySystem.git
    ```
-2. Install PipEnv packages
-   ```sh
+2. Install dependencies packages
+   ```shell
    pipenv install
    ```
 
@@ -143,7 +146,7 @@ After that, CSRT will track and draw the ROI's bounding box.
     * You can reset and track a new object anytime you want by opening the ROI selection window.
     * Press `Q` to close the program.
     
-> NOTE: this method can only track one object at a time. 
+> **NOTE:** this method can only track one object at a time. 
 No other objects will be detected if you are already tracking one.
 
 ![motion_tracking](images/csrtDetection.PNG)
@@ -194,8 +197,7 @@ Project Link: [https://github.com/alu0101109251/DepthCameraSecuritySystem](https
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 
-* [numpy](https://numpy.org/)
-* [Shields.io](https://img.shields.io/)
+* [Virtual Historical Reconstruction Project of San Cristóbal de La Laguna](https://portalciencia.ull.es/proyectos/41561/detalle)
 
 
 
